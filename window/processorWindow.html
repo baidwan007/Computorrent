@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="myCSS.css">
+  </head>
+  <body class="bg">
+  	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  	<script src="jquery-3.4.1.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js.1"></script>
+    <div id="div3">
+    <div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-lg">Percentage of CPU power to offer</span>
+  </div>
+  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+</div>
+
+<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-lg">Time of offering</span>
+  </div>
+  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+</div>
+
+<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-lg">Percentage of Storage offered</span>
+  </div>
+  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+</div>
+
+    <button type="button" class="btn btn-outline-success" id="process">Earn Computation Credit</button></div>
+    <!-- You can also require other files to run in this process -->
+    <script>
+    	// console.log($);
+       var ipc = require('electron').ipcRenderer;
+       console.log("in script")
+var buttonEl=document.getElementById('process')
+console.log(buttonEl);
+      buttonEl.addEventListener('click',function(){
+        console.log("in here on click")
+        $.get("http://localhost:8080/endpoint",  function(data,status) { 
+                            console.log(status)
+                            console.log(data)
+                        })
+      })
+      console.log("above ipc")
+      ipc.send("start-express")
+      console.log("ipc sent")
+    </script>
+<!--     <script src="./renderer.js"></script>
+ -->  </body>
+</html>

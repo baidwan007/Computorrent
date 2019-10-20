@@ -1,18 +1,22 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+const ipc = require('electron').ipcMain
+const express=require('express')
+// const ipc=require('ipc').ipcMain
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+function createMainWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: 'preload.js',
+      nodeIntegration: true
     }
   })
 
@@ -31,10 +35,54 @@ function createWindow () {
   })
 }
 
+function createProcessorWindow(){
+  processorWindow=new BrowserWindow({
+    width: 500,
+    height: 500,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  })
+  processorWindow.loadFile('window/processorWindow.html')
+  return processorWindow
+}
+
+function createSubmitterWindow(){
+  submitterWindow=new BrowserWindow({
+    width: 500,
+    height: 500,
+    show: false
+  })
+  submitterWindow.loadFile('window/submitterWindow.html')
+  return submitterWindow
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function(){
+  createMainWindow();
+  var processorWindow=createProcessorWindow();
+  var submitterWindow=createSubmitterWindow();
+  ipc.on('show-processor-window',function(){
+    console.log("hi")
+      processorWindow.show();
+  })
+  ipc.on('show-submitter-window',function(){
+      submitterWindow.show();
+  })
+  ipc.on('start-express',function(){
+    console.log("in express shit")
+      var app=express();
+      app.get('/',function(req,res)
+      {
+      res.send('Hello World!');
+      });
+      var server=app.listen(3000,function() {});
+      console.log(server)
+                            })
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

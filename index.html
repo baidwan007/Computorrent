@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-theme.min.css">
+    <link rel="stylesheet" href="myCSS.css">
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="popper.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+
   </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+  <body class="bg">
+    <h1 align="center">COMPUTORRENT</h1>
+    <div class="bs-example" id="myDiv">
+      <form id="myDiv2">
+        <div class="wrapperDiv">
+          <p>Contribute your processing power to the pool and earn computation credits to get access to equivalent computation power later</p>
+          <button type="button" class="btn btn-outline-success" id="process">Contibute Processing Power</button>
+        </div>
+          <div class="wrapperDiv">
+            <p>Avail computation power from the pool based on thee amount of credits you have</p>
+            <button type="button" class="btn btn-outline-info" id="processSubmit">Submit a job</button>
+          </div>
+          </form>
+          
+    </div>
 
     <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
-  </body>
+    <script>
+       var ipc = require('electron').ipcRenderer;
+      // var ipc=require('ipc')
+      var buttonEl=document.getElementById('process')
+      buttonEl.addEventListener('click',function(){
+        console.log("in here on click")
+        ipc.send('show-processor-window')
+      })
+
+      var buttonElSubmit=document.getElementById('processSubmit')
+      buttonElSubmit.addEventListener('click',function(){
+        console.log("in here on click")
+        ipc.send('show-submitter-window')
+      })
+    </script>
+<!--     <script src="./renderer.js"></script>
+ -->  </body>
 </html>
